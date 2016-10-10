@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+      "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+      "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+                <!-- Some templates -->
+    <definition name="common" template="/WEB-INF/layout/classic.jsp">
+        <put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
+        <put-attribute name="header" value="/WEB-INF/layout/header.jsp" />
+    </definition>
+   
+    <definition name="index" extends="common">
+        <put-attribute name="title" value="index" />
+        <put-attribute name="body" value="/WEB-INF/views/index.jsp" />
+    </definition>
+    
+    <definition name="admin" extends="common">
+        <put-attribute name="title" value="admin" />
+        <put-attribute name="body" value="/WEB-INF/views/admin.jsp" />
+    </definition>
+    
+     <definition name="adminCountry" extends="common">
+        <put-attribute name="title" value="adminCountry" />
+        <put-attribute name="body" value="/WEB-INF/views/adminCountry.jsp" />
+    </definition>
+    
+     <definition name="adminCategory" extends="common">
+        <put-attribute name="title" value="adminCategory" />
+        <put-attribute name="body" value="/WEB-INF/views/adminCategory.jsp" />
+    </definition>
+    
+     <definition name="adminClient" extends="common">
+        <put-attribute name="title" value="adminClient" />
+        <put-attribute name="body" value="/WEB-INF/views/adminClient.jsp" />
+    </definition>
+    
+    <definition name="adminUser" extends="common">
+        <put-attribute name="title" value="adminUser" />
+        <put-attribute name="body" value="/WEB-INF/views/adminUser.jsp" />
+    </definition>
+    
+     <definition name="adminColor" extends="common">
+        <put-attribute name="title" value="adminColor" />
+        <put-attribute name="body" value="/WEB-INF/views/adminColor.jsp" />
+    </definition>
+    
+     <definition name="adminOrders" extends="common">
+        <put-attribute name="title" value="adminOrders" />
+        <put-attribute name="body" value="/WEB-INF/views/adminOrders.jsp" />
+    </definition>
+    
+     <definition name="adminProduct" extends="common">
+        <put-attribute name="title" value="adminProduct" />
+        <put-attribute name="body" value="/WEB-INF/views/adminProduct.jsp" />
+    </definition>
+    
+    <definition name="adminType" extends="common">
+        <put-attribute name="title" value="adminType" />
+        <put-attribute name="body" value="/WEB-INF/views/adminType.jsp" />
+    </definition>
+    
+     <definition name="adminGender" extends="common">
+        <put-attribute name="title" value="adminGender" />
+        <put-attribute name="body" value="/WEB-INF/views/adminGender.jsp" />
+    </definition>
+    
+     <definition name="adminGendero" extends="common">
+        <put-attribute name="title" value="adminGendero" />
+        <put-attribute name="body" value="/WEB-INF/views/adminGendero.jsp" />
+    </definition>
+    
+    <definition name="login" extends="common">
+		<put-attribute name="title" value="admin" />
+		<put-attribute name="body" value="/WEB-INF/views/login.jsp" />
+	</definition>
+	
+	<definition name="registration" extends="common">
+		<put-attribute name="title" value="admin" />
+		<put-attribute name="body" value="/WEB-INF/views/registration.jsp" />
+	</definition>
+    
+    <definition name="product" extends="common">
+        <put-attribute name="title" value="product" />
+        <put-attribute name="body" value="/WEB-INF/views/product.jsp" />
+    </definition>
+    
+    <definition name="single" extends="common">
+        <put-attribute name="title" value="single" />
+        <put-attribute name="body" value="/WEB-INF/views/single.jsp" />
+    </definition>
+    
+    <definition name="cart" extends="common">
+        <put-attribute name="title" value="cart" />
+        <put-attribute name="body" value="/WEB-INF/views/cart.jsp" />
+    </definition>
+    
+    <definition name="contact" extends="common">
+        <put-attribute name="title" value="contact" />
+        <put-attribute name="body" value="/WEB-INF/views/contact.jsp" />
+    </definition>
+    
+     <definition name="man" extends="common">
+        <put-attribute name="title" value="man" />
+        <put-attribute name="body" value="/WEB-INF/views/man.jsp" />
+    </definition>
+    
+</tiles-definitions>
