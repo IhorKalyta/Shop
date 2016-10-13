@@ -1,8 +1,6 @@
 package ua.service.implementation;
 
-import java.util.Calendar;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 
@@ -17,10 +15,8 @@ import org.springframework.stereotype.Service;
 
 import ua.entity.Role;
 import ua.entity.User;
-import ua.entity.VerificationToken;
 import ua.form.ClientFilterForm;
 import ua.repository.UserRepository;
-import ua.repository.VerificationTokenRepository;
 import ua.service.UserService;
 import ua.service.implementation.specification.UserFilterAdapter;
 
@@ -34,14 +30,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	private BCryptPasswordEncoder encoder;
 
 	@Autowired
-	private MailSender mail;
-
-	@Autowired
-	private VerificationTokenRepository tokenRepository;
-
-	public static final String TOKEN_INVALID = "invalidToken";
-	public static final String TOKEN_EXPIRED = "expired";
-	private static final String TOKEN_VALID = "valid";
+	private MailSender mailSender;
 
 	@Override
 	public User findByLogin(String login) {
@@ -51,10 +40,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Override
 	public void save(User user) {
+
 		user.setRole(Role.ROLE_USER);
+		String pass = user.getPassword();
 		user.setPassword(encoder.encode(user.getPassword()));
-		mail.sendMail("Congratulation", user.getMail(), "Welcome to our shop");
+		user.setLogin(user.getLogin());
+		user.setMail(user.getMail());
+		user.setConfirmed(user.getConfirmed());
+
 		userRepository.save(user);
+
+		String mailBody = "Congratulation ! You registered on Shop.com" + "\n"
+				+ "Login : " + user.getLogin() + "\n" + "E-mail : "
+				+ user.getMail() + "\n" + "Password : " + pass
+				+ "\n" + "Please click on the confirmation link " + "\n"
+				+ "http://www.localhost:8080/confirmation/" + user.getUuid()
+				+ "/" + user.getId();
+		mailSender.sendMail("Registration confirm", user.getMail(), mailBody);
 	}
 
 	@PostConstruct
@@ -66,7 +68,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 			user.setPassword(encoder.encode("admin"));
 			user.setLogin("admin");
 			user.setId(1);
-			user.setEnabled(true);
+			user.setConfirmed(true);
 
 			userRepository.save(user);
 		}
@@ -106,48 +108,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public void createVerificationTokenForUser(User user, String token) {
-		VerificationToken myToken = new VerificationToken(token, user);
-		tokenRepository.save(myToken);
+	public User findByUuid(String uuid) {
 
+		return userRepository.findByUuid(uuid);
 	}
 
 	@Override
-	public VerificationToken getVerificationToken(String VerificationToken) {
-
-		return tokenRepository.findByToken(VerificationToken);
-	}
-
-	@Override
-	public String validateVerificationToken(String token) {
-
-		final VerificationToken verificationToken = tokenRepository
-				.findByToken(token);
-		if (verificationToken == null) {
-			return TOKEN_INVALID;
-		}
-
-		final User user = verificationToken.getUser();
-		final Calendar cal = Calendar.getInstance();
-		if ((verificationToken.getExpiryDate().getTime() - cal.getTime()
-				.getTime()) <= 0) {
-			tokenRepository.delete(verificationToken);
-			return TOKEN_EXPIRED;
-		}
-
-		user.setEnabled(true);
-		// tokenRepository.delete(verificationToken);
+	public void confirmEmail(int userId) {
+		User user = userRepository.findOne(userId);
+		user.setConfirmed(true);
 		userRepository.save(user);
-		return TOKEN_VALID;
-	}
-
-	@Override
-	public User getUser(String verificationToken) {
-		VerificationToken token = tokenRepository.findByToken(verificationToken);
-        if (token != null) {
-            return token.getUser();
-        }
-        return null;
 	}
 
 }

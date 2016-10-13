@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class MailSender {
 
 	 private final static String USERNAME = "shop.kalyta@gmail.com";
-	    private final static String PASSWORD = "**********";
+	    private final static String PASSWORD = "***********";
 	    @Async
 	    public void sendMail(String content, String email, String mailBody) {
 	        Properties properties = System.getProperties();

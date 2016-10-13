@@ -13,6 +13,10 @@ public class UserForm {
 	private String password;
 	
 	private Role role;
+	
+	private String uuid;
+	
+	private Boolean confirmed;
 
 	public int getId() {
 		return id;
@@ -54,5 +58,22 @@ public class UserForm {
 		this.role = role;
 	}
 
+	public Boolean getConfirmed() {
+		return confirmed;
+	}
+
+	public void setConfirmed(Boolean confirmed) {
+		this.confirmed = confirmed;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+	
+	
 	
 }

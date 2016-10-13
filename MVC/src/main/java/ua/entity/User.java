@@ -3,6 +3,7 @@ package ua.entity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -31,16 +32,30 @@ public class User implements UserDetails {
 	private String mail;
 
 	private String password;
+
+	private String uuid = String.valueOf(UUID.randomUUID());
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
 	@Enumerated
 	private Role role;
-	
-	private boolean enabled;
-	
+
+	private Boolean confirmed;
+
 	
 
-	public User() {
-		super();
-		this.enabled = false;
+	public Boolean getConfirmed() {
+		return confirmed;
+	}
+
+	public void setConfirmed(Boolean confirmed) {
+		this.confirmed = confirmed;
 	}
 
 	public int getId() {
@@ -102,9 +117,11 @@ public class User implements UserDetails {
 		return true;
 	}
 
-	
 	public boolean isEnabled() {
-		return enabled;
+		if (getConfirmed() == null || getConfirmed() == false) {
+			return false;
+		}
+		return true;
 	}
 
 	public Role getRole() {
@@ -119,10 +136,4 @@ public class User implements UserDetails {
 		this.password = password;
 	}
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-
-	
-	
 }

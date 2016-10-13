@@ -1,8 +1,5 @@
 package ua.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Locale;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +12,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+
 import ua.entity.User;
 import ua.form.ClientFilterForm;
 import ua.service.UserService;
@@ -57,34 +55,22 @@ public class UserController {
 
 	@RequestMapping(value = "registration", method = RequestMethod.POST)
 	public String save(@ModelAttribute("user") @Valid User user,
-			BindingResult br, Model model) {
+			BindingResult br) {
 		if (br.hasErrors()) {
-
 			return "registration";
 		}
 		userService.save(user);
 		return "redirect:/login";
 	}
-
-	@RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)
-	public String confirmRegistration(final Locale locale, final Model model,
-			@RequestParam("token") final String token)
-			throws UnsupportedEncodingException {
-		final String result = userService.validateVerificationToken(token);
-		if (result.equals("valid")) {
-			final User user = userService.getUser(token);
-			System.out.println(user);
-
-			model.addAttribute("message", messages.getMessage(
-					"message.accountVerified", null, locale));
-			return "redirect:/login?lang=" + locale.getLanguage();
+	
+	@RequestMapping("/confirmation/{UUID}/{id}")
+	public String login(@PathVariable("UUID")String uuid,@PathVariable("id") int id, @ModelAttribute("logForm") User user){
+		if(userService.findById(id).getUuid().equals(userService.findByUuid(uuid).getUuid())) {
+			userService.confirmEmail(id);
+			return "redirect:/login";
 		}
-
-		model.addAttribute("message",
-				messages.getMessage("auth.message." + result, null, locale));
-		model.addAttribute("expired", "expired".equals(result));
-		model.addAttribute("token", token);
-		return "redirect:/badUser.html?lang=" + locale.getLanguage();
+		
+		return "registration";
 	}
 
 }
